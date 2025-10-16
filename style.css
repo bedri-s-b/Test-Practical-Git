@@ -89,7 +89,7 @@ body {
   margin: 0% auto 0 auto;
   width: 100%;
   max-width: 1200px;
-  background: linear-gradient(180deg, rgba(143, 154, 163, 0.463), rgba(19, 10, 50, 0.436));
+  background: linear-gradient(180deg, rgba(111, 128, 141, 0.463), rgba(19, 10, 50, 0.436));
   border-radius: calc(var(--radius) + 4px);
   padding: 28px;
   box-shadow: 0 10px 40px rgba(20, 179, 255, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.02);
