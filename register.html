@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width:640px; margin:48px auto;">
+        <main role="main">
+            <h1>Create an account</h1>
+            <p class="lead">Sign up to get access. All fields are required unless noted.</p>
+
+            <form id="registerForm" class="add-form full-width" autocomplete="on" novalidate>
+                <div style="display:flex;gap:12px;">
+                    <div style="flex:1">
+                        <label for="firstName">First name</label>
+                        <input id="firstName" name="firstName" type="text" required autocomplete="given-name" />
+                    </div>
+                    <div style="flex:1">
+                        <label for="lastName">Last name</label>
+                        <input id="lastName" name="lastName" type="text" required autocomplete="family-name" />
+                    </div>
+                </div>
+
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" required pattern="^[A-Za-z0-9_]{3,30}$" autocomplete="username" />
+                <div class="helper">3–30 characters. Letters, numbers and underscores only.</div>
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required autocomplete="email" />
+
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="tel" pattern="^\+?[0-9\s\-()]{7,20}$" autocomplete="tel" />
+                <div class="helper">Include country code if available.</div>
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password" />
+                <div class="helper">Minimum 8 characters.</div>
+                <div class="strength" aria-hidden="true"><i id="pwStrengthBar"></i></div>
+                <div id="pwError" class="error" hidden></div>
+
+                <label for="confirm">Confirm password</label>
+                <input id="confirm" name="confirm" type="password" required autocomplete="new-password" />
+                <div id="confirmError" class="error" hidden></div>
+
+                <label class="terms">
+                    <input id="terms" name="terms" type="checkbox" required />
+                    I agree to the terms and privacy policy
+                </label>
+
+                <div style="display:flex;justify-content:space-between;gap:12px;margin-top:6px;">
+                    <button id="submitBtn" type="submit" class="add-btn">Create account</button>
+                    <button id="resetBtn" type="button" class="add-btn secondary">Reset</button>
+                </div>
+            </form>
+
+            <div id="result" style="margin-top:12px;"></div>
+        </main>
+    </div>
+
+    <script>
+        // Simple client-side validation with password strength indicator.
+        const form = document.getElementById('registerForm');
+        const password = document.getElementById('password');
+        const confirm = document.getElementById('confirm');
+        const pwBar = document.getElementById('pwStrengthBar');
+        const pwError = document.getElementById('pwError');
+        const confirmError = document.getElementById('confirmError');
+        const result = document.getElementById('result');
+        const resetBtn = document.getElementById('resetBtn');
+
+        function scorePassword(pw) {
+            let score = 0;
+            if (!pw) return 0;
+            if (pw.length >= 8) score += 1;
+            if (pw.length >= 12) score += 1;
+            if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score += 1;
+            if (/\d/.test(pw)) score += 1;
+            if (/[^A-Za-z0-9]/.test(pw)) score += 1;
+            return score; // 0..5
+        }
+
+        function updateStrength() {
+            const s = scorePassword(password.value);
+            const pct = Math.round((s / 5) * 100);
+            pwBar.style.width = pct + '%';
+            if (s <= 1) {
+                pwBar.style.background = '#ef4444';
+            } else if (s <= 3) {
+                pwBar.style.background = '#f59e0b';
+            } else {
+                pwBar.style.background = 'linear-gradient(90deg,#84cc16,#06b6d4)';
+            }
+        }
+
+        password.addEventListener('input', () => {
+            updateStrength();
+            pwError.hidden = true;
+            confirmError.hidden = true;
+        });
+
+        confirm.addEventListener('input', () => {
+            confirmError.hidden = true;
+        });
+
+        resetBtn.addEventListener('click', () => {
+            form.reset();
+            pwBar.style.width = '0%';
+            pwError.hidden = true;
+            confirmError.hidden = true;
+            result.innerHTML = '';
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Clear prior messages
+            pwError.hidden = true;
+            confirmError.hidden = true;
+            result.innerHTML = '';
+
+            // Use browser validation first
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            // Password checks
+            if (password.value.length < 8) {
+                pwError.textContent = 'Password must be at least 8 characters.';
+                pwError.hidden = false;
+                password.focus();
+                return;
+            }
+            if (password.value !== confirm.value) {
+                confirmError.textContent = 'Passwords do not match.';
+                confirmError.hidden = false;
+                confirm.focus();
+                return;
+            }
+
+            // Simulate successful registration (replace with real submission)
+            const data = {
+                firstName: form.firstName.value.trim(),
+                lastName: form.lastName.value.trim(),
+                username: form.username.value.trim(),
+                email: form.email.value.trim(),
+                phone: form.phone.value.trim()
+            };
+
+            result.innerHTML = '<div class="success">Account created successfully for ' + (data.username || data.email) + '.</div>';
+            form.reset();
+            pwBar.style.width = '0%';
+        });
+    </script>
+</body>
+</html>

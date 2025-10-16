@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" style="max-width:520px; margin:48px auto;">
+        <main role="main">
+            <h1>Sign in</h1>
+            <p class="lead">Enter your credentials to sign in.</p>
+
+            <form id="loginForm" class="add-form" autocomplete="on" novalidate>
+                <label for="username">Username or Email</label>
+                <input id="username" name="username" type="text" required autocomplete="username" />
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" required autocomplete="current-password" />
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                    <label style="font-size:13px;color:var(--muted)"><input type="checkbox" name="remember"> Remember me</label>
+                    <a href="#" style="color:var(--neon-2);text-decoration:none;font-weight:600">Forgot?</a>
+                </div>
+
+                <div style="margin-top:12px;display:flex;gap:12px;">
+                    <button id="loginBtn" type="submit" class="add-btn">Sign in</button>
+                    <a href="register.html" class="add-btn" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;">Register</a>
+                </div>
+            </form>
+
+            <div id="loginResult" style="margin-top:12px;"></div>
+        </main>
+    </div>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const result = document.getElementById('loginResult');
+        form.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            if(!form.checkValidity()) { form.reportValidity(); return }
+            // Demo login
+            result.innerHTML = '<div class="success">Signed in as '+ (form.username.value || '') +'</div>';
+            form.reset();
+        })
+    </script>
+</body>
+</html>
