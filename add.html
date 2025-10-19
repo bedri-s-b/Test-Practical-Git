@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="bg">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,8 +10,9 @@
   <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
-  <nav class="top-nav">
+  <!-- <nav class="top-nav">
     <ul>
       <li><a href="/index.html">Начало</a></li>
       <li><a href="/guest.html">Гост</a></li>
@@ -18,19 +20,25 @@
       <li><a href="/register.html">Регистрация</a></li>
       <li><a href="/login.html">Вход</a></li>
     </ul>
+  </nav> -->
+
+  <nav class="top-nav">
+    <li><a href="/index.html">Начало</a></li>
   </nav>
+
 
   <div class="container" role="main">
     <header>
       <div class="logo" aria-hidden="true">
         <!-- small neon glyph -->
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="18" height="18" rx="4" stroke="url(#g)" stroke-width="1.6"/>
-          <path d="M7 16V8l4 4 4-4v8" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="url(#g)" stroke-width="1.6" />
+          <path d="M7 16V8l4 4 4-4v8" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round" />
           <defs>
             <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#5cff46"/>
-              <stop offset="1" stop-color="#39ff14"/>
+              <stop offset="0" stop-color="#5cff46" />
+              <stop offset="1" stop-color="#39ff14" />
             </linearGradient>
           </defs>
         </svg>
@@ -42,45 +50,92 @@
     </header>
 
     <main style="display:flex;gap:22px;align-items:flex-start;">
-        <section style="flex:1">
-            <form action="/add" method="POST" class="add-form">
-            <h2>Добави нова тема</h2>
-            <label for="title">Заглавие</label>
-            <input type="text" id="title" name="title" required>
-    
-            <label for="description">Описание</label>
-            <textarea id="description" name="description" rows="4" required></textarea>
-    
-            <label for="link">Външен линк (по избор)</label>
-            <input type="url" id="link" name="link">
-    
-            <button type="submit" class="add-btn">Добави тема</button>
-            </form>
-        </section>
-    
-        <section style="flex:1">
-            <h2>Насоки за добавяне на тема</h2>
-            <ul>
-                <li>Изберете ясно и кратко заглавие.</li>
-                <li>Опишете темата с няколко изречения.</li>
-                <li>Добавете външен линк, ако има подходящ ресурс.</li>
-                <li>Уверете се, че информацията е точна и полезна.</li>
-            </ul>
+      <section style="flex:1">
+        <form action="/add" method="POST" class="add-form">
+          <h2>Добави нова тема</h2>
+          <label for="title">Заглавие</label>
+          <input type="text" id="title" name="title" required>
+
+          <label for="description">Описание</label>
+          <textarea id="description" name="description" rows="4" required></textarea>
+
+          <!-- external link removed per request -->
+
+          <label>Теми (маркирайте няколко)</label>
+          <div class="topic-list" style="margin-top:6px;">
+            <label><input type="checkbox" name="topicChk" value="javascript" checked> JavaScript</label>
+            <label><input type="checkbox" name="topicChk" value="css"> CSS</label>
+            <label><input type="checkbox" name="topicChk" value="html"> HTML</label>
+            <label><input type="checkbox" name="topicChk" value="other"> Друг / Нов</label>
+          </div>
+
+          <div class="topic-input" style="display:none; margin-top:8px;">
+            <label for="newTopic">Нова тема (ако избранa)</label>
+            <input type="text" id="newTopic" name="newTopic" placeholder="Въведете нова тема">
+          </div>
+
+          <!-- hidden field to submit the final topic(s) -->
+          <input type="hidden" name="topic" id="topicField" value="javascript">
+
+          <button type="submit" class="add-btn">Добави тема</button>
+        </form>
+      </section>
+
+      <section style="flex:1">
+        <h2>Насоки за добавяне на тема</h2>
+        <ul>
+          <li>Изберете ясно и кратко заглавие.</li>
+          <li>Опишете темата с няколко изречения.</li>
+          <li>Добавете външен линк, ако има подходящ ресурс.</li>
+          <li>Уверете се, че информацията е точна и полезна.</li>
+        </ul>
     </main>
   </div>
 
   <script>
     // Smooth scrolling for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
         const href = a.getAttribute('href');
-        if(href.length>1){
+        if (href.length > 1) {
           e.preventDefault();
           const el = document.querySelector(href);
-          if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       })
     });
+
+    // Topic selection logic (checkbox list)
+    const topicChecks = Array.from(document.querySelectorAll('input[name="topicChk"]'));
+    const topicInputWrap = document.querySelector('.topic-input');
+    const newTopicInput = document.getElementById('newTopic');
+    const topicField = document.getElementById('topicField');
+    const addForm = document.querySelector('.add-form');
+
+    function updateTopicUI(){
+      const checked = topicChecks.filter(c => c.checked).map(c=>c.value);
+      if(checked.includes('other')) topicInputWrap.style.display = 'block';
+      else topicInputWrap.style.display = 'none';
+      topicField.value = checked.filter(s=>s!=='other').join(',') || '';
+    }
+
+    topicChecks.forEach(c => c.addEventListener('change', updateTopicUI));
+    newTopicInput.addEventListener('input', ()=>{
+      const checked = topicChecks.filter(c => c.checked).map(c=>c.value).filter(s=>s!=='other');
+      if(newTopicInput.value.trim()) checked.push(newTopicInput.value.trim());
+      topicField.value = checked.join(',');
+    });
+
+    addForm.addEventListener('submit', ()=>{
+      const checked = topicChecks.filter(c => c.checked).map(c=>c.value);
+      const chosen = checked.filter(s=>s!=='other');
+      if(checked.includes('other')){
+        if(newTopicInput.value.trim()) chosen.push(newTopicInput.value.trim());
+        else chosen.push('root');
+      }
+      topicField.value = chosen.join(',') || 'root';
+    });
   </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="bg">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,9 +10,10 @@
   <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
 
-  <nav class="top-nav">
+  <!-- <nav class="top-nav">
   <ul>
     <li><a href="/index.html">Начало</a></li>
     <li><a href="/guest.html">Гост</a></li>
@@ -19,19 +21,23 @@
     <li><a href="/register.html">Регистрация</a></li>
     <li><a href="/login.html">Вход</a></li>
   </ul>
-</nav>
+</nav> -->
+  <nav class="top-nav">
+    <li><a href="/index.html">Начало</a></li>
+  </nav>
 
   <div class="container" role="main">
     <header>
       <div class="logo" aria-hidden="true">
         <!-- small neon glyph -->
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="3" width="18" height="18" rx="4" stroke="url(#g)" stroke-width="1.6"/>
-          <path d="M7 16V8l4 4 4-4v8" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="url(#g)" stroke-width="1.6" />
+          <path d="M7 16V8l4 4 4-4v8" stroke="url(#g)" stroke-width="1.6" stroke-linecap="round"
+            stroke-linejoin="round" />
           <defs>
             <linearGradient id="g" x1="0" x2="1">
-              <stop offset="0" stop-color="#5cff46"/>
-              <stop offset="1" stop-color="#39ff14"/>
+              <stop offset="0" stop-color="#5cff46" />
+              <stop offset="1" stop-color="#39ff14" />
             </linearGradient>
           </defs>
         </svg>
@@ -45,7 +51,7 @@
     <main style="display:flex;gap:22px;align-items:flex-start;">
       <section style="flex:1">
         <div class="grid">
-          <article class="card" id="topic-design">
+          <!-- <article class="card" id="topic-design">
             <h3>Дизайн и UI</h3>
             <p>Принципи на съвременния дизайн: контраст, типография и микродвижения.</p>
             <div class="links">
@@ -79,13 +85,13 @@
               <a href="#topic-cnc">Преглед</a>
               <a href="https://example.com/projects" target="_blank" rel="noopener">Чети повече</a>
             </div>
-          </article>
+          </article> -->
 
           <div class="card-add">
-            <h3>Създай свой cheat sheet</h3>
+            <h3>Създай нов cheat sheet</h3>
             <div class="links">
               <p>Създай лено и свой собствен.</p>
-            <a href="/add.html">добавяне</a>
+              <a href="/add.html">добавяне</a>
             </div>
           </div>
 
@@ -114,16 +120,17 @@
 
   <script>
     // Smooth scrolling for internal links
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
         const href = a.getAttribute('href');
-        if(href.length>1){
+        if (href.length > 1) {
           e.preventDefault();
           const el = document.querySelector(href);
-          if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       })
     });
   </script>
 </body>
+
 </html>

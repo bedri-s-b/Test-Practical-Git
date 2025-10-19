@@ -39,6 +39,7 @@ db.serialize(() => {
             name VARCHAR(255) NOT NULL,
             description TEXT,
             example MEDIUMTEXT,
+            source VARCHAR(255),
             topic_id INT NOT NULL,
             FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
         )

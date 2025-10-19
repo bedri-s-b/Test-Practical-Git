@@ -1,2 +1,7 @@
-# Ignore the ceat-for-me.txt file in localDB
-localDB/ceat-for-me.txt
+# Ignore all node_modules directories
+node_modules/
+**/node_modules/
+
+# Ignore only-for-me.txt files
+localDB/only-for-me.txt
+only-for-me.txt
