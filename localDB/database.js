@@ -10,30 +10,39 @@ const db = new sqlite3.Database('cheat_sheets.db', (err) => {
 });
 
 
-// Създаваме таблица cheat_sheets, ако не съществува
+// Създаваме всички таблици в един serialize блок
 db.serialize(() => {
-    db.run("CREATE TABLE IF NOT EXISTS topics (\n    topic_id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT NOT NULL,\n    short_descr TEXT\n)");
-});
+    // Таблица topics
+    db.run(`
+        CREATE TABLE IF NOT EXISTS topics (
+            topic_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            short_descr TEXT
+        )
+    `);
 
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS topics_topics (
-    topic_id INTEGER NOT NULL,
-    connected_topic_id INTEGER NOT NULL,
-    PRIMARY KEY (topic_id, connected_topic_id),
-    FOREIGN KEY (topic_id) REFERENCES topics(topic_id),
-    FOREIGN KEY (connected_topic_id) REFERENCES topics(topic_id)
-)`);
-});
+    // Таблица topics_topics (с връзки към topics)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS topics_topics (
+            topic_id INTEGER NOT NULL,
+            connected_topic_id INTEGER NOT NULL,
+            PRIMARY KEY (topic_id, connected_topic_id),
+            FOREIGN KEY (topic_id) REFERENCES topics(topic_id),
+            FOREIGN KEY (connected_topic_id) REFERENCES topics(topic_id)
+        )
+    `);
 
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS examples (
-    example_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    example MEDIUMTEXT,
-    topic_id INT NOT NULL,
-    FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
-)`);
+    // Таблица examples (с външен ключ към topics)
+    db.run(`
+        CREATE TABLE IF NOT EXISTS examples (
+            example_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(255) NOT NULL,
+            description TEXT,
+            example MEDIUMTEXT,
+            topic_id INT NOT NULL,
+            FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
+        )
+    `);
 });
 
 
