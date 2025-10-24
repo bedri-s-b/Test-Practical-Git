@@ -3,7 +3,7 @@ const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;  
-// const selectSampleData = require('./localDB/cheadt_sheets.db');
+const selectSampleData = require('../localDB/selectSampleData');
 
 // Свързваме се с базата
 const db = new sqlite3.Database(path.join(__dirname, '../localDB/cheat_sheets.db'), (err) => {
@@ -13,7 +13,7 @@ const db = new sqlite3.Database(path.join(__dirname, '../localDB/cheat_sheets.db
 app.locals.db = db;
 
 // Middleware за статични файлове
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Middleware за парсване на JSON тела
 app.use(express.json());

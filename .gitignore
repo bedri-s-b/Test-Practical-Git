@@ -1,7 +1,9 @@
 # Ignore all node_modules directories
 node_modules/
 **/node_modules/
+only_to_me_folder/
 
-# Ignore only-for-me.txt files
-localDB/only-for-me.txt
-only-for-me.txt
+# Ignore only-to-me.txt files
+localDB/only-to-me.txt
+server/only-to-me.txt
+only-to-me.txt
