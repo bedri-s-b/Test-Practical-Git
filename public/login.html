@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
+     <script src="/js/login.js" type="module"></script>
 </head>
 <body>
     <div class="container" style="max-width:520px; margin:48px auto;">
@@ -34,16 +35,6 @@
         </main>
     </div>
 
-    <script>
-        const form = document.getElementById('loginForm');
-        const result = document.getElementById('loginResult');
-        form.addEventListener('submit', (e)=>{
-            e.preventDefault();
-            if(!form.checkValidity()) { form.reportValidity(); return }
-            // Demo login
-            result.innerHTML = '<div class="success">Signed in as '+ (form.username.value || '') +'</div>';
-            form.reset();
-        })
-    </script>
+   
 </body>
 </html>
