@@ -1,35 +1,35 @@
-const express = require('express');
-const path = require('path');
-const sqlite3 = require('sqlite3').verbose();
+
+
+import  express  from 'express';
+import { initializeDatabase } from '../LDB/database.js';
+import { fetchAllCards } from '../LDB/database.js';
+
+// const selectSampleData = require('../localDB/selectSampleData');
+// const dataRoutes = require('./routes/dataRoutes');
+
 const app = express();
-const PORT = process.env.PORT || 3000;  
-const selectSampleData = require('../localDB/selectSampleData');
+const PORT = process.env.PORT || 3000;
 
-// Свързваме се с базата
-const db = new sqlite3.Database(path.join(__dirname, '../localDB/cheat_sheets.db'), (err) => {
-    if (err) console.error('Грешка при свързване с базата:', err.message);
-    else console.log('✅ Свързване с базата успешно!');
-});
-app.locals.db = db;
+// Инициализация на базата данни
+let db;
+(async () => {
+  db = await initializeDatabase();
+})();
 
-// Middleware за статични файлове
-app.use(express.static(path.join(__dirname, '../public')));
-
-// Middleware за парсване на JSON тела
+// Middlewares
 app.use(express.json());
+app.use(express.static('public'));
 
-// Рутер за извличане на примерни данни
-app.get('/api/sample-data', async (req, res) => {
-  try {
-    const data = await selectSampleData();
-    res.json(data);
-  } catch (error) {
-    console.error('Error fetching sample data:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+// Маршрути
+app.get("/index", async (req, res) => {
+  const cards = await fetchAllCards();
+  res.json(cards);
+  
 });
 
 // Стартиране на сървъра
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+

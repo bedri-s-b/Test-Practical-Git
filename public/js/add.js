@@ -42,4 +42,41 @@
       topicField.value = chosen.join(',') || 'root';
     });
 
-    
+
+  // public/js/add.js
+// document.addEventListener('DOMContentLoaded', () => {
+//   const form = document.getElementById('addForm');
+//   const message = document.getElementById('message');
+
+//   form.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+
+//     const title = document.getElementById('title').value.trim();
+//     const content = document.getElementById('content').value.trim();
+
+//     if (!title || !content) {
+//       message.textContent = '⚠️ Попълни всички полета.';
+//       return;
+//     }
+
+//     try {
+//       const response = await fetch('/api/sample-data', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ title, content })
+//       });
+
+//       const data = await response.json();
+
+//       if (response.ok) {
+//         message.textContent = '✅ Успешно добавен запис!';
+//         form.reset();
+//       } else {
+//         message.textContent = '❌ Грешка: ' + (data.error || 'Нещо се обърка.');
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       message.textContent = '⚠️ Проблем с връзката към сървъра.';
+//     }
+//   });
+// });
