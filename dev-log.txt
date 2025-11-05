@@ -1,8 +1,0 @@
-
-
-[2025-10-07]
-- Started project as a Git/Git Bash practice area.
-
-[2025-10-09]
-- Decided to turn it into a cheat sheet.
-- Planned to make it generic for any future topic.
