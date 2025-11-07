@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function displayUserData(res) {
   // const response = await fetch('/index');
   const data = await res.json();
-
   // Display the user data on the page
-  const container = document.querySelector('.container');
+  const container = document.querySelector('.grid');
+  const addArticle = document.querySelector('.card-add');
+  container.removeChild(addArticle);
   data.forEach(item => {
     const card = document.createElement('article');
     card.classList.add('card');
@@ -45,8 +46,9 @@ async function displayUserData(res) {
       </div>
     `;
     container.appendChild(card);
+    container.appendChild(addArticle);
   });
 
-  console.log('User data fetched successfully:', data);
+  // console.log('User data fetched successfully:', data);
   return data;
 }
