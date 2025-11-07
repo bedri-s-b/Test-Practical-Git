@@ -1,4 +1,4 @@
 
 export function getAllCards(db) {
-  return db.all('SELECT * FROM examples');
+  return db.all('SELECT * FROM topics');
 }
