@@ -10,16 +10,21 @@ import { getAllCards } from './selectData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const dbPath = path.join(__dirname, 'cheat_sheets.db');
 
-const db = await open({
-    filename: dbPath,
-    driver: sqlite3.Database
-});
+let db;
+
+// Отваряме базата данни
+async function openDB() {
+    const connection = await open({
+        filename: dbPath,
+        driver: sqlite3.Database
+    });
+    return connection;
+}
 
 export async function initializeDatabase() {
-    // Отваряме базата данни
+    if (!db) db = await openDB();
     console.log('✅ Свързан с базата cheat_sheets.db');
     await createTables(db); // Създаваме таблиците, ако не съществуват
     // Добавяме примерни данни, ако базата е празна
@@ -28,8 +33,11 @@ export async function initializeDatabase() {
 }
 
 export async function fetchAllCards() {
+    if (!db) db = await openDB();
     const cards = await getAllCards(db);
     return cards;
     // console.log("Ok im here");
 }
+
+export default db;
 
