@@ -24,6 +24,7 @@ newTopicInput.addEventListener('input', () => {
   topicField.value = checked.join(',');
 });
 
+// Initial UI update
 addForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const checked = topicChecks.filter(c => c.checked).map(c => c.value);
@@ -63,7 +64,7 @@ addForm.addEventListener('submit', async (e) => {
     window.location.reload();
   } else {
     alert('Възникна грешка при добавянето на новия cheat sheet. Моля, опитайте отново.');
-  }  
+  }
 
 });
 
