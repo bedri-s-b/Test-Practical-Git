@@ -68,13 +68,10 @@ addForm.addEventListener('submit', async (e) => {
 
   if (res.ok) {
     alert('Новият cheat sheet е добавен успешно!');
-    console.log(res.body);
     window.location.reload();
   } else {
     alert('Възникна грешка при добавянето на новия cheat sheet. Моля, опитайте отново.');
-  } 
-
-  
+  }  
 
 });
 

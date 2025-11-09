@@ -12,7 +12,7 @@ const localIp = Object.values(interfaces)
   .find(i => i.family === 'IPv4' && !i.internal)?.address;
 
 // Инициализация на базата данни
-let db;
+export let db;
 (async () => {
   db = await initializeDatabase();
 })();

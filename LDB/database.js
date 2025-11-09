@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { createTables } from './createTables.js';
 import { insertData } from './insertData.js';
 import { getAllCards } from './selectData.js';
+import { addCard } from './insertData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +38,10 @@ export async function fetchAllCards() {
     const cards = await getAllCards(db);
     return cards;
     // console.log("Ok im here");
+}
+
+export async function addNewCard(title, description, topics) {
+    return addCard(db, title, description, topics);
 }
 
 export default db;

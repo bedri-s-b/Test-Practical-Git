@@ -53,3 +53,15 @@ export async function insertData(db) {
     console.error('❌ Грешка при добавяне на данни:', err.message);
   }
 }
+
+// Add New card into table
+export async function addCard(db, title, description, topics) {
+  try {
+    console.log('Добавяне на нов cheat sheet:', title, description, topics);
+    const result = await db.run('INSERT INTO topics (name, short_descr) VALUES (?, ?)',
+        [title, description]);
+    console.log('✅ Новият cheat sheet е добавен.');
+  } catch (err) {
+    console.error('❌ Грешка при добавяне на нов cheat sheet:', err.message);
+  }  
+}
