@@ -2,12 +2,17 @@
 import  express  from 'express';
 import { initializeDatabase } from '../LDB/database.js';
 import { fetchAllCards } from '../LDB/database.js';
+import os from 'os';
+import router from './routes/dataRoutes.js';
 
-// const selectSampleData = require('../localDB/selectSampleData');
 // const dataRoutes = require('./routes/dataRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const interfaces = os.networkInterfaces();
+const localIp = Object.values(interfaces)
+  .flat()
+  .find(i => i.family === 'IPv4' && !i.internal)?.address;
 
 // Инициализация на базата данни
 let db;
@@ -18,17 +23,20 @@ let db;
 // Middlewares
 app.use(express.json());
 app.use(express.static('public'));
+app.use('/', router);
 
 // Маршрути
-app.get("/index", async (req, res) => {
-  const cards = await fetchAllCards();
-  res.json(cards);
+// app.get("/index", async (req, res) => {
+//   const cards = await fetchAllCards();
+//   res.json(cards);
   
-});
+// });
 
-// Стартиране на сървъра
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on:`);
+  console.log(`→ Local:  http://localhost:${PORT}`);
+  console.log(`→ LAN:    http://${localIp}:${PORT}`);
 });
 
 
