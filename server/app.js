@@ -1,7 +1,6 @@
 
-import  express  from 'express';
+import express from 'express';
 import { initializeDatabase } from '../LDB/database.js';
-import { fetchAllCards } from '../LDB/database.js';
 import os from 'os';
 import router from './routes/dataRoutes.js';
 
@@ -21,7 +20,8 @@ let db;
 // Middlewares
 app.use(express.json());
 app.use(express.static('public'));
-app.use('/', router);
+app.use('/', router)
+
 
 // Стартиране на сървъра
 app.listen(PORT, '0.0.0.0', () => {

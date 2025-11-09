@@ -13,13 +13,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 });
 
 // Initialize the user data
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => { 
   try {
     const response = await fetch('/index');
-    console.log('User data fetched successfully:', response);
     const data = await displayUserData(response);
     if (!response.ok) throw new Error('Network response was not ok');
-    console.log('User data fetched successfully:', data);
   } catch (error) {
     console.error('Error fetching user data:', error);
   }
@@ -27,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Fetch and display the user data
 async function displayUserData(res) {
-  // const response = await fetch('/index');
   const data = await res.json();
   // Display the user data on the page
   const container = document.querySelector('.grid');
