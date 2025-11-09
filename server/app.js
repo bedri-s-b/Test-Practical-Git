@@ -5,8 +5,6 @@ import { fetchAllCards } from '../LDB/database.js';
 import os from 'os';
 import router from './routes/dataRoutes.js';
 
-// const dataRoutes = require('./routes/dataRoutes');
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 const interfaces = os.networkInterfaces();
@@ -25,14 +23,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/', router);
 
-// Маршрути
-// app.get("/index", async (req, res) => {
-//   const cards = await fetchAllCards();
-//   res.json(cards);
-  
-// });
-
-
+// Стартиране на сървъра
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on:`);
   console.log(`→ Local:  http://localhost:${PORT}`);
