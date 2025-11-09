@@ -1,23 +1,29 @@
 // server/routes/dataRoutes.js
-const express = require('express');
-const router = express.Router();
+ import express from 'express';
 
+  const router = express.Router();
 // Взимаме функциите от localDB
-const selectInitialData = require('../../LDB/selectSampleData').selectSampleData;
+import { fetchAllCards } from '../../LDB/database.js';
 // const insertSampleData = require('../../LDB/insertSampleData');
 
 // GET – взима данни от базата
-router.get('/sample', async (req, res) => {
+router.get("/index", async (req, res) => {
+  const cards = await fetchAllCards();
+  res.json(cards);
+  
+});
+
+router.post('/add', async (req, res) => {
   try {
-    const data = await selectInitialData();
-    res.json(data);
-    console.log(data);
+    // Here you would handle the insertion logic using the data from req.body
+    // For example:
+    // await insertSampleData(req.body);
+    res.status(200).json({ message: 'Data added successfully' });
   } catch (err) {
-    console.error('❌ Error fetching data:', err);
+    console.error('❌ Error adding data:', err);
     res.status(500).json({ error: 'Database error' });
   }
 });
 
 
-
-module.exports = router;
+export default router;

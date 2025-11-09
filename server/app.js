@@ -1,10 +1,7 @@
 
-import  express  from 'express';
+import express from 'express';
 import { initializeDatabase } from '../LDB/database.js';
-import { fetchAllCards } from '../LDB/database.js';
-
-// const selectSampleData = require('../localDB/selectSampleData');
-// const dataRoutes = require('./routes/dataRoutes');
+import router from './routes/dataRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,13 +15,7 @@ let db;
 // Middlewares
 app.use(express.json());
 app.use(express.static('public'));
-
-// Маршрути
-app.get("/index", async (req, res) => {
-  const cards = await fetchAllCards();
-  res.json(cards);
-  
-});
+app.use('/', router)
 
 // Стартиране на сървъра
 app.listen(PORT, () => {
