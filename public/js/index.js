@@ -29,8 +29,8 @@ async function displayUserData(res) {
       <h3>${item.name}</h3>
       <p>${item.short_descr}</p>
       <div class="links">
-        <a href="#topic-${item.topic_id}">Преглед</a>
-        <a href="https://example.com/${item.topic_id}" target="_blank" rel="noopener">Чети повече</a>
+        <a href="/card/topic/${item.topic_id}">Преглед</a>
+        <a href="/topic/${item.topic_id}">Детайли</a>
       </div>
     `;
     container.appendChild(card);

@@ -19,8 +19,9 @@ export let db;
 
 // Middlewares
 app.use(express.json());
-app.use(express.static('public'));
 app.use('/', router)
+app.use(express.static('public'));
+
 
 
 // Стартиране на сървъра

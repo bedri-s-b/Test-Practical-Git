@@ -11,6 +11,12 @@ router.get("/index", async (req, res) => {
   res.json(cards);
 
 });
+
+// GET - взима данни за конкретна тема
+router.get("/card/topic/:id", async (req, res) => {
+ //to be implemented
+});
+
 // POST – добавя нови данни в базата
 router.post('/add', async (req, res) => {
   try {

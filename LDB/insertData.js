@@ -57,8 +57,13 @@ export async function insertData(db) {
 // Add New card into table
 export async function addCard(db, title, description, topics) {
   try {
-    const result = await db.run('INSERT INTO topics (name, short_descr) VALUES (?, ?)',
+    const topic = await db.run('INSERT INTO topics (name, short_descr) VALUES (?, ?)',
         [title, description]);
+    const topics_topics = topics.map(t => db.run(
+      'INSERT INTO topics_topics (topic_id, connected_topic_id) VALUES (?, ?)',
+      [topic.lastID, t]));
+    await Promise.all(topics_topics);
+    console.log('✅ Новият cheat sheet е добавен успешно.');
   } catch (err) {
     console.error('❌ Грешка при добавяне на нов cheat sheet:', err.message);
   }  
