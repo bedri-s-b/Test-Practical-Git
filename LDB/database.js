@@ -8,6 +8,7 @@ import { createTables } from './createTables.js';
 import { insertData } from './insertData.js';
 import { getAllCards } from './selectData.js';
 import { addCard } from './insertData.js';
+import { getTopicById } from './selectData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -42,6 +43,12 @@ export async function fetchAllCards() {
 
 export async function addNewCard(title, description, topics) {
     return addCard(db, title, description, topics);
+}
+
+export async function fetchTopicById(id) {
+    if (!db) db = await openDB();
+    const topic = await getTopicById(db, id);
+    return topic;
 }
 
 export default db;

@@ -29,7 +29,7 @@ async function displayUserData(res) {
       <h3>${item.name}</h3>
       <p>${item.short_descr}</p>
       <div class="links">
-        <a href="/card/topic/${item.topic_id}">Преглед</a>
+        <a href="/card/${item.topic_id}">Преглед</a>
         <a href="/topic/${item.topic_id}">Детайли</a>
       </div>
     `;

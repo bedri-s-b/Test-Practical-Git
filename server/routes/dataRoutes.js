@@ -1,23 +1,29 @@
-
-// server/routes/dataRoutes.js
 import express from 'express';
-import { fetchAllCards } from '../../LDB/database.js';
-import { addNewCard } from '../../LDB/database.js';
+import { fetchAllCards, addNewCard, fetchTopicById } from '../../LDB/database.js';
+import path from 'path';
 
 const router = express.Router();
-// GET – взима данни от базата
+
+// Всички карти
 router.get("/index", async (req, res) => {
   const cards = await fetchAllCards();
   res.json(cards);
-
 });
 
-// GET - взима данни за конкретна тема
-router.get("/card/topic/:id", async (req, res) => {
- //to be implemented
+// Страница за конкретна карта
+router.get('/card/:id', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
 });
 
-// POST – добавя нови данни в базата
+// Данни за конкретна карта
+router.get("/api/card/:id", async (req, res) => {
+  const topicId = req.params.id;
+  const topic = await fetchTopicById(topicId);
+  if (!topic) return res.status(404).json({ error: 'Topic not found' });
+  res.json(topic);
+});
+
+// Добавяне на нова карта
 router.post('/add', async (req, res) => {
   try {
     const { title, description, topics } = req.body;
