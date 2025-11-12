@@ -1,3 +1,5 @@
+
+//Fetch card data and populate the page
 document.addEventListener('DOMContentLoaded', async () => {
   const id = window.location.pathname.split('/').pop();
   try {

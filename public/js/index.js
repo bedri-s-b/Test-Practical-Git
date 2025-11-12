@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Fetch and display the user data
 async function displayUserData(res) {
   const data = await res.json();
-  // Display the user data on the page
   const container = document.querySelector('.grid');
   const addArticle = document.querySelector('.card-add');
   container.removeChild(addArticle);
@@ -36,7 +35,6 @@ async function displayUserData(res) {
     container.appendChild(card);
     container.appendChild(addArticle);
   });
-
-  // console.log('User data fetched successfully:', data);
+  
   return data;
 }

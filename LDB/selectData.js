@@ -7,3 +7,8 @@ export function getAllCards(db) {
 export async function getTopicById(db, id) {
   return db.get('SELECT * FROM topics WHERE topic_id = ?', [id]);
 } 
+
+// Fethch names ot all topics
+export async function getAllTopicNames(db) {
+  return db.all('SELECT name FROM topics');
+}

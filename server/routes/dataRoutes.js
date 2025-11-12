@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchAllCards, addNewCard, fetchTopicById } from '../../LDB/database.js';
+import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics} from '../../LDB/database.js';
 import path from 'path';
 
 const router = express.Router();
@@ -31,6 +31,17 @@ router.post('/add', async (req, res) => {
     res.status(201).json({ message: 'Card added successfully' });
   } catch (err) {
     console.error('❌ Error adding data:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// Вземане на иманата всички теми
+router.get('/topics/names', async (req, res) => {
+  try {
+    const names = await fetchNamesOfTopics();
+    res.json(names);
+  } catch (err) {
+    console.error('❌ Error fetching topic names:', err);
     res.status(500).json({ error: 'Database error' });
   }
 });
