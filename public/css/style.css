@@ -239,7 +239,7 @@ p.lead {
 
 .card-add h3 {
   margin: 0 0 8px 0;
-  color: #dac20b;
+  color: #0bda23;
   font-size: 16px
 }
 
@@ -278,7 +278,7 @@ p.lead {
 }
 
 .card-add .links a {
-  background: linear-gradient(90deg, rgb(146, 153, 160), rgba(20, 179, 255, 0.7));
+  background: linear-gradient(90deg, rgb(223, 230, 224), rgba(56, 226, 0, 0.7));
 }
 
 nav.side {

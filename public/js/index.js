@@ -4,7 +4,7 @@ import { scrolling } from './common.js';
 scrolling();
 
 // Initialize the user data
-document.addEventListener('DOMContentLoaded', async () => { 
+document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await fetch('/index');
     const data = await displayUserData(response);
@@ -18,8 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function displayUserData(res) {
   const data = await res.json();
   const container = document.querySelector('.grid');
-  const addArticle = document.querySelector('.card-add');
-  container.removeChild(addArticle);
   data.forEach(item => {
     const card = document.createElement('article');
     card.classList.add('card');
@@ -33,8 +31,6 @@ async function displayUserData(res) {
       </div>
     `;
     container.appendChild(card);
-    container.appendChild(addArticle);
   });
-  
   return data;
 }
