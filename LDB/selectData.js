@@ -12,3 +12,10 @@ export async function getTopicById(db, id) {
 export async function getAllTopicNames(db) {
   return db.all('SELECT name FROM topics');
 }
+
+//Fetch names of related topics by IDs
+export async function getRelatedTopicNames(db, topicIds) {
+  const data = await db.all(
+    `SELECT connected_topic_id FROM topics_topics WHERE topic_id = ?`, [topicIds]);
+  return data;
+};

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 import { createTables } from './createTables.js';
 import { addCard, insertData } from './insertData.js';
-import { getAllCards, getTopicById, getAllTopicNames } from './selectData.js';
+import { getAllCards, getTopicById, getAllTopicNames, getRelatedTopicNames } from './selectData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +52,12 @@ export async function fetchNamesOfTopics() {
     if (!db) db = await openDB();
     const names = await getAllTopicNames(db);
     return names;
+}
+
+export async function fetchRelatedTopicNames(topicIds) {
+    if (!db) db = await openDB();
+    const relatedNames = await getRelatedTopicNames(db, topicIds);
+    return relatedNames;
 }
 
 export default db;
