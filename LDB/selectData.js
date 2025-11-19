@@ -6,7 +6,7 @@ export function getAllCards(db) {
 // Fetch topic by ID
 export async function getTopicById(db, id) {
   return db.get('SELECT * FROM topics WHERE topic_id = ?', [id]);
-} 
+}
 
 // Fethch names ot all topics
 export async function getAllTopicNames(db) {
@@ -19,3 +19,9 @@ export async function getRelatedTopicNames(db, topicIds) {
     `SELECT connected_topic_id FROM topics_topics WHERE topic_id = ?`, [topicIds]);
   return data;
 };
+
+//Fetch all examples related to a topic
+export async function getRelatedExamples(db, topicId) {
+  const data = await db.all(`SELECT * FROM examples WHERE topic_id = ?`, [topicId]);
+  return data
+}

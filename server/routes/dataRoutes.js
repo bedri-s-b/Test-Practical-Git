@@ -1,5 +1,5 @@
 import express from 'express';
-import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames } from '../../LDB/database.js';
+import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames, fetchRelatedExamples } from '../../LDB/database.js';
 import path from 'path';
 
 const router = express.Router();
@@ -19,8 +19,8 @@ router.get('/card/:id', (req, res) => {
 router.get("/api/card/:id", async (req, res) => {
   const topicId = req.params.id;
   const topic = await fetchTopicById(topicId);
-  const getRelatedTopicNames = await fetchRelatedTopicNames(topicId);
-  topic.relatetTopics = getRelatedTopicNames;
+  topic.relatetTopics = await fetchRelatedTopicNames(topicId);
+  topic.examples = await fetchRelatedExamples(topicId);
   if (!topic) return res.status(404).json({ error: 'Topic not found' });
   res.json(topic);
 });
