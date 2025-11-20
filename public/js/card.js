@@ -71,15 +71,17 @@ async function diplayExamples(examples) {
 // Add example
 exampleHref.addEventListener('click', (e) => {
   e.preventDefault();
-  const navExample = document.querySelector('.nav-example') 
-  navExample.insertAdjacentElement('afterend',showForm())
-
+  const navExample = document.querySelector('.nav-example')
+  let result = document.querySelector('.example-form');
+  if (!result) {
+    navExample.insertAdjacentElement('afterend', showForm())
+  }
 })
 
 function showForm() {
   const form = document.createElement('div');
   form.innerHTML = `
-    <div class="single-view">
+    <div class="single-view example-form">
                 <form action="/add" id="add-example" class="card" method="POST">
                     <header>
                         <h3>Добави пример</h3>
