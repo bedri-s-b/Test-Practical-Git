@@ -1,6 +1,7 @@
 import express from 'express';
 import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames, fetchRelatedExamples } from '../../LDB/database.js';
 import path from 'path';
+import { log } from 'console';
 
 const router = express.Router();
 
@@ -24,6 +25,11 @@ router.get("/api/card/:id", async (req, res) => {
   if (!topic) return res.status(404).json({ error: 'Topic not found' });
   res.json(topic);
 });
+
+// Добавяне на пример
+router.get("/card/example/:id", async (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
+})
 
 // Добавяне на нова карта
 router.post('/add', async (req, res) => {
