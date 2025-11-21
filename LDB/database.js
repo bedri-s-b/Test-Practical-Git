@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import { createTables } from './createTables.js';
-import { addCard, insertData } from './insertData.js';
+import { addCard, insertData, addExample } from './insertData.js';
 import { getAllCards, getTopicById, getAllTopicNames, getRelatedTopicNames, getRelatedExamples } from './selectData.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,7 +27,7 @@ async function openDB() {
 export async function initializeDatabase() {
     if (!db) db = await openDB();
     console.log('✅ Свързан с базата cheat_sheets.db');
-    await createTables(db); 
+    await createTables(db);
     await insertData(db);
     return db;
 }
@@ -66,5 +66,8 @@ export async function fetchRelatedExamples(topicId) {
     return relatedExamples;
 }
 
-// export default db;
+export async function addNewExample(title, description, example, topicId) {
+    if (!db) db = await openDB();
+    await addExample(db, title, description, example, topicId)
+}
 

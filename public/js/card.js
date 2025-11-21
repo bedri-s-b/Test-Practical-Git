@@ -68,21 +68,28 @@ async function diplayExamples(examples) {
   })
 }
 
-// Add example
-exampleHref.addEventListener('click', (e) => {
+/*Adding, checking, recording a new example in db*/
+
+//-------> Example start
+
+// Add a listener to the entry point
+exampleHref.addEventListener('click', async (e) => {
   e.preventDefault();
   const navExample = document.querySelector('.nav-example')
   let result = document.querySelector('.example-form');
   if (!result) {
-    navExample.insertAdjacentElement('afterend', showForm())
+    navExample.insertAdjacentElement('afterend', showForm());
+    const addForm = document.querySelector('.add-btn');
+    await addEventListenerToForm();
   }
-})
+});
 
+// Dynamic form
 function showForm() {
   const form = document.createElement('div');
   form.innerHTML = `
     <div class="single-view example-form">
-                <form action="/add" id="add-example" class="card" method="POST">
+                <form action="/api/example/${id}" id="add-example" class="card" method="POST">
                     <header>
                         <h3>Добави пример</h3>
                     </header>
@@ -94,6 +101,10 @@ function showForm() {
                         <label for="description">Описание</label>
                         <textarea id="description" name="description" rows="4" required></textarea>
                     </section>
+                     <section  class="example">
+                        <label for="example">Пример</label>
+                        <textarea id="example" name="example" rows="4" required></textarea>
+                    </section>
                     <section  class="example">
                         <button type="submit" class="add-btn">Добави пример</button>
                     </section>
@@ -103,3 +114,50 @@ function showForm() {
   return form;
 }
 
+// Sent the data to Server
+async function addEventListenerToForm(form) {
+  document.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const title = document.querySelector('#title').value.trim();
+    const description = document.querySelector('#description').value.trim();
+    const example = document.querySelector('#example').value.trim();
+
+    if (!title) {
+      alert('Моля, въведете заглавие на примера.');
+      return;
+    };
+
+    if (!description) {
+      alert('Моля, въведете обяснение обяснението.');
+      return;
+    };
+
+    if (!example) {
+      alert('Моля, въведете обяснение примера.');
+      return;
+    };
+
+    const formData = {
+      title,
+      description,
+      example,
+      tipicId: id
+    };
+
+    const res = await fetch('/api/example/:id', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    if (res.ok) {
+      alert('Новият пример е добавен успешно!');
+      window.location.href = `/card/${id}`;
+    } else {
+      alert('Възникна грешка при добавянето на новия cheat sheet. Моля, опитайте отново.');
+    }
+
+  })
+};
+
+//-------> Example end

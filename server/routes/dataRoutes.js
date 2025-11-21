@@ -1,7 +1,6 @@
 import express from 'express';
-import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames, fetchRelatedExamples } from '../../LDB/database.js';
+import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames, fetchRelatedExamples, addNewExample } from '../../LDB/database.js';
 import path from 'path';
-import { log } from 'console';
 
 const router = express.Router();
 
@@ -30,6 +29,19 @@ router.get("/api/card/:id", async (req, res) => {
 router.get("/card/example/:id", async (req, res) => {
   res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
 })
+
+//Записване на пример в базата
+router.post("/api/example/:id", async (req, res) => {
+  try {
+    const { title, description, example, tipicId } = req.body;
+    await addNewExample(title, description, example, tipicId)
+    res.status(201).json({ message: 'Example added successfully' });
+  } catch (error) {
+    onsole.error('❌ Error adding data:', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+
+});
 
 // Добавяне на нова карта
 router.post('/add', async (req, res) => {
