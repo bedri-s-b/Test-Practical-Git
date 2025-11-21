@@ -1,6 +1,5 @@
 import express from 'express';
-import { fetchAllCards, addNewCard, fetchTopicById, fetchNamesOfTopics, fetchRelatedTopicNames, fetchRelatedExamples, addNewExample } from '../../LDB/database.js';
-import path from 'path';
+import { fetchAllCards, addNewCard, fetchNamesOfTopics } from '../../LDB/database.js';
 
 const router = express.Router();
 
@@ -8,39 +7,6 @@ const router = express.Router();
 router.get("/index", async (req, res) => {
   const cards = await fetchAllCards();
   res.json(cards);
-});
-
-// Страница за конкретна карта
-router.get('/card/:id', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
-});
-
-// Данни за конкретна карта
-router.get("/api/card/:id", async (req, res) => {
-  const topicId = req.params.id;
-  const topic = await fetchTopicById(topicId);
-  topic.relatetTopics = await fetchRelatedTopicNames(topicId);
-  topic.examples = await fetchRelatedExamples(topicId);
-  if (!topic) return res.status(404).json({ error: 'Topic not found' });
-  res.json(topic);
-});
-
-// Добавяне на пример
-router.get("/card/example/:id", async (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
-})
-
-//Записване на пример в базата
-router.post("/api/example/:id", async (req, res) => {
-  try {
-    const { title, description, example, tipicId } = req.body;
-    await addNewExample(title, description, example, tipicId)
-    res.status(201).json({ message: 'Example added successfully' });
-  } catch (error) {
-    onsole.error('❌ Error adding data:', err);
-    res.status(500).json({ error: 'Database error' });
-  }
-
 });
 
 // Добавяне на нова карта

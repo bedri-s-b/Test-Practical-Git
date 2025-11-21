@@ -3,6 +3,8 @@ import { initializeDatabase } from '../LDB/database.js';
 import path from 'path';
 import os from 'os';
 import router from './routes/dataRoutes.js';
+import routerCard from './routes/cardRoute.js';
+import routerApi from './routes/apiRouter.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +21,8 @@ export let db;
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.use(express.json());
 app.use('/', router);
+app.use('/card', routerCard)
+app.use('/api', routerApi)
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on:`);

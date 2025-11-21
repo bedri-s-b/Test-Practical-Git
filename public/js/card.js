@@ -53,7 +53,7 @@ async function diplayExamples(examples) {
                         ${e.example}
             </code> <nav class="top-nav">
                         <ul>
-                            <li><a href="#">Редактирай</a></li>
+                            <li><a href="/card/example/edit/${e.example_id}">Редактирай</a></li>
                             <li><a href="#">Изтрий</a></li>
                         </ul>
                     </nav></pre>
@@ -67,6 +67,7 @@ async function diplayExamples(examples) {
 
   })
 }
+
 
 /*Adding, checking, recording a new example in db*/
 
