@@ -1,164 +1,186 @@
-
+// -------------------- Селектори --------------------
 const titleElemnt = document.querySelector('.container h1');
 const shortDescr = document.querySelector('.container .lead');
 const tags = document.querySelector('.tags');
 const main = document.querySelector('main');
-const exampleHref = document.querySelector('#add-example');
+const exampleBtn = document.querySelector('#add-example');
 const id = window.location.pathname.split('/').pop();
 
-//Fetch card data and populate the page
+// Контейнер за examples
+const examplesContainer = document.createElement('div');
+examplesContainer.id = 'examples-container';
+main.appendChild(examplesContainer);
+
+// -------------------- Fetch card data --------------------
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const res = await fetch(`/api/card/${id}`);
     const data = await res.json();
-    await displayUserData(data);
-    await diplayExamples(data.examples);
-    exampleHref.href = `/card/example/${id}`
+
+    displayUserData(data);
+    displayExamples(data.examples);
+
+    exampleBtn.href = `/card/example/${id}`;
   } catch (error) {
     console.error('Error fetching card data:', error);
   }
 });
 
-// Display data in Card template
-async function displayUserData(dataRes) {
+// -------------------- Display card data --------------------
+function displayUserData(dataRes) {
   titleElemnt.textContent = dataRes.name;
   shortDescr.textContent = dataRes.short_descr;
+
   dataRes.relatetTopics.forEach(relTopic => {
     const tag = document.createElement('span');
-    tag.innerHTML = `
-    <span class="tag">${relTopic.connected_topic_id}</span>
-    `
-    tags.appendChild(tag)
+    tag.className = 'tag';
+    tag.textContent = relTopic.connected_topic_id;
+    tags.appendChild(tag);
   });
-
 }
 
-// Display all related examples
-async function diplayExamples(examples) {
+// -------------------- Display examples --------------------
+function displayExamples(examples) {
   examples.forEach(e => {
-    const singelView = document.createElement('div');
-    singelView.innerHTML = `
-       <div class="single-view">
-                <!-- Single card view (JavaScript example) -->
-                <article class="card" aria-labelledby="card1-title">
-                    <header>
-                        <h3 id="card1-title">${e.name}</h3>
-                        <p class="muted">Кратко обяснение за бърз достъп</p>
-                    </header>
-                    <p class="card-desc">${e.description}</p>
+    const singleView = document.createElement('div');
+    singleView.id = e.example_id;
 
-                    <section class="examples">
-                        <h4>Пример</h4>
-                        <pre><code>
-                        ${e.example}
-            </code> <nav class="top-nav">
-                        <ul>
-                            <li><a href="/card/example/edit/${e.example_id}">Редактирай</a></li>
-                            <li><a href="#">Изтрий</a></li>
-                        </ul>
-                    </nav></pre>
-                    </section>
+    singleView.innerHTML = `
+      <div class="single-view">
+        <article class="card" aria-labelledby="card1-title">
+          <header>
+            <h3 id="card1-title">${e.name}</h3>
+            <p class="muted">Кратко обяснение за бърз достъп</p>
+          </header>
 
-                </article>
+          <p class="card-desc">${e.description}</p>
 
-            </div>
-    `
-    main.appendChild(singelView)
+          <section class="examples">
+            <h4>Пример</h4>
+            <pre><code>${e.example}</code></pre>
 
-  })
+            <nav class="top-nav">
+              <ul>
+                <li><a href="#" class="edit-btn" data-id="${e.example_id}">Редактирай</a></li>
+                <li><a href="#" class="delete-btn" data-id="${e.example_id}">Изтрий</a></li>
+              </ul>
+            </nav>
+          </section>
+        </article>
+      </div>
+    `;
+
+    examplesContainer.appendChild(singleView);
+  });
 }
 
-
-/*Adding, checking, recording a new example in db*/
-
-//-------> Example start
-
-// Add a listener to the entry point
-exampleHref.addEventListener('click', async (e) => {
+// -------------------- Добавяне на нов пример --------------------
+exampleBtn.addEventListener('click', (e) => {
   e.preventDefault();
-  const navExample = document.querySelector('.nav-example')
-  let result = document.querySelector('.example-form');
-  if (!result) {
+
+  const navExample = document.querySelector('.nav-example');
+  if (!document.querySelector('.example-form')) {
     navExample.insertAdjacentElement('afterend', showForm());
-    const addForm = document.querySelector('.add-btn');
-    await addEventListenerToForm();
   }
 });
 
-// Dynamic form
-function showForm() {
-  const form = document.createElement('div');
-  form.innerHTML = `
-    <div class="single-view example-form">
-                <form action="/api/example/${id}" id="add-example" class="card" method="POST">
-                    <header>
-                        <h3>Добави пример</h3>
-                    </header>
-                    <section  class="example">
-                        <label for="title">Заглавие</label>
-                        <input type="text" id="title" name="title" required>
-                    </section>
-                     <section  class="example">
-                        <label for="description">Описание</label>
-                        <textarea id="description" name="description" rows="4" required></textarea>
-                    </section>
-                     <section  class="example">
-                        <label for="example">Пример</label>
-                        <textarea id="example" name="example" rows="4" required></textarea>
-                    </section>
-                    <section  class="example">
-                        <button type="submit" class="add-btn">Добави пример</button>
-                    </section>
-                </form>
-            </div>
-  `
-  return form;
+// -------------------- Функция за създаване на формата --------------------
+function showForm(example) {
+  const formWrapper = document.createElement('div');
+  formWrapper.className = 'single-view example-form';
+
+  formWrapper.innerHTML = `
+    <form class="card" method="POST">
+      <header><h3>${example ? 'Редактирай пример' : 'Добави пример'}</h3></header>
+
+      <section class="example">
+        <label for="title">Заглавие</label>
+        <input type="text" id="title" name="title" value="${example ? example.name : ''}" required>
+      </section>
+
+      <section class="example">
+        <label for="description">Описание</label>
+        <textarea id="description" name="description" rows="4" required>${example ? example.description : ''}</textarea>
+      </section>
+
+      <section class="example">
+        <label for="example">Пример</label>
+        <textarea id="example" name="example" rows="4" required>${example ? example.example : ''}</textarea>
+      </section>
+
+      <section class="example">
+        <button type="submit" class="add-btn">${example ? 'Запази' : 'Добави пример'}</button>
+      </section>
+    </form>
+  `;
+
+  // Спиране на bubble, за да не се задейства click listener-а на контейнера
+  formWrapper.addEventListener('click', (e) => e.stopPropagation());
+
+  return formWrapper;
 }
 
-// Sent the data to Server
-async function addEventListenerToForm(form) {
-  document.addEventListener('submit', async (e) => {
+// -------------------- Submit на формата --------------------
+examplesContainer.addEventListener('submit', async (e) => {
+  const form = e.target.closest('form');
+  if (!form) return;
+
+  e.preventDefault();
+
+  const title = form.querySelector('#title').value.trim();
+  const description = form.querySelector('#description').value.trim();
+  const exampleText = form.querySelector('#example').value.trim();
+
+  if (!title || !description || !exampleText) {
+    alert('Попълнете всички полета!');
+    return;
+  }
+
+  const formData = {
+    title,
+    description,
+    example: exampleText,
+    tipicId: id
+  };
+
+  const res = await fetch('/api/example/:id', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  });
+
+  if (res.ok) {
+    alert('Примерът е записан успешно!');
+    window.location.reload();
+  } else {
+    alert('Възникна грешка, опитайте отново.');
+  }
+});
+
+// -------------------- Event delegation за бутоните --------------------
+examplesContainer.addEventListener('click', async (e) => {
+  // EDIT
+  if (e.target.classList.contains('edit-btn')) {
     e.preventDefault();
-    const title = document.querySelector('#title').value.trim();
-    const description = document.querySelector('#description').value.trim();
-    const example = document.querySelector('#example').value.trim();
+    const exampleId = e.target.dataset.id;
 
-    if (!title) {
-      alert('Моля, въведете заглавие на примера.');
-      return;
-    };
+    const res = await fetch('/api/example/' + exampleId);
+    const data = await res.json();
 
-    if (!description) {
-      alert('Моля, въведете обяснение обяснението.');
-      return;
-    };
+    const oldBlock = document.getElementById(exampleId);
+    const form = showForm(data[0]);
+    oldBlock.replaceWith(form);
+    return;
+  }
 
-    if (!example) {
-      alert('Моля, въведете обяснение примера.');
-      return;
-    };
-
-    const formData = {
-      title,
-      description,
-      example,
-      tipicId: id
-    };
-
-    const res = await fetch('/api/example/:id', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-
-    if (res.ok) {
-      alert('Новият пример е добавен успешно!');
-      window.location.href = `/card/${id}`;
-    } else {
-      alert('Възникна грешка при добавянето на новия cheat sheet. Моля, опитайте отново.');
+  // DELETE
+  if (e.target.classList.contains('delete-btn')) {
+    e.preventDefault();
+    const exampleId = e.target.dataset.id;
+    if (confirm('Сигурни ли сте, че искате да изтриете този пример?')) {
+      await fetch('/api/example/' + exampleId, { method: 'DELETE' });
+      const oldBlock = document.getElementById(exampleId);
+      oldBlock.remove();
     }
-
-  })
-};
-
-//-------> Example end
+  }
+});

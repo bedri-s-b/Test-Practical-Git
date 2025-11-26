@@ -453,6 +453,10 @@ footer {
   box-shadow: none;
 }
 
+.examples pre {
+  font-size: 18px;
+}
+
 /* Tests some stuff */
 body {
   background: linear-gradient(180deg, rgba(29, 10, 50, 0.53), rgba(11, 18, 221, 0.626));

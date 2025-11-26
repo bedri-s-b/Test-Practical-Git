@@ -25,3 +25,8 @@ export async function getRelatedExamples(db, topicId) {
   const data = await db.all(`SELECT * FROM examples WHERE topic_id = ?`, [topicId]);
   return data
 }
+
+//Fetch one example
+export async function getOneExample(db, exampleId) {
+  return await db.all(`SELECT * FROM examples WHERE example_id = ?`, [exampleId]);
+} 

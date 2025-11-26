@@ -7,7 +7,8 @@ import { fileURLToPath } from 'url';
 
 import { createTables } from './createTables.js';
 import { addCard, insertData, addExample } from './insertData.js';
-import { getAllCards, getTopicById, getAllTopicNames, getRelatedTopicNames, getRelatedExamples } from './selectData.js';
+import { getAllCards, getTopicById, getAllTopicNames, getRelatedTopicNames, getRelatedExamples, getOneExample } from './selectData.js';
+import { updateExample } from './updateData.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,5 +70,15 @@ export async function fetchRelatedExamples(topicId) {
 export async function addNewExample(title, description, example, topicId) {
     if (!db) db = await openDB();
     await addExample(db, title, description, example, topicId)
+}
+
+export async function upDateExampleById(name, description, example, topic_id) {
+    if (!db) db = await openDB();
+    return await updateExample(db, name, description, example, topic_id);
+}
+
+export async function getAExample(exampleId) {
+    if (!db) db = await openDB();
+    return await getOneExample(db, exampleId);
 }
 
