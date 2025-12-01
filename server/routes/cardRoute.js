@@ -2,6 +2,7 @@ import express from 'express';
 import { upDateExampleById } from '../../LDB/database.js';
 
 import path from 'path';
+import { deleteExampleById } from '../../LDB/database.js'
 
 const routerCard = express.Router();
 
@@ -14,13 +15,6 @@ routerCard.get('/:id', (req, res) => {
 routerCard.get("/example/:id", async (req, res) => {
     res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
 })
-
-// //Вземане на формрата
-// routerCard.get('/example/edit/:id', async (req, res) => {
-//     res.sendFile(path.join(process.cwd(), 'public', 'card.html'));
-// })
-
-
 
 //Редактиране на на Пример
 routerCard.patch('/example/edit/:id', async (req, res) => {
@@ -44,6 +38,24 @@ routerCard.patch('/example/edit/:id', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "DB error" });
+    }
+});
+
+//Триене на Пример
+
+routerCard.delete('/example/delete/:id',async (req, res) =>{
+    try{
+        const id = req.params.id;
+
+        const result = deleteExampleById(id);
+        res.json({
+            message: 'Example delete seccessfuly',
+            changes: result 
+        });
+        
+    } catch (err){
+        console.log(err);
+        res.status(500).json({error: 'DB error while deleting'});
     }
 });
 

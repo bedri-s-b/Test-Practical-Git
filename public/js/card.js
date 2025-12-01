@@ -126,7 +126,6 @@ document.addEventListener('submit', async (e) => {
   const form = e.target.closest('form');
   const exampleId = e.target.dataset.id;
   if (!form) return;
-  console.log(form.dataset.edit);
   if (form.dataset.edit == 'true') { editExample(form); return };
 
   e.preventDefault();
@@ -181,7 +180,7 @@ document.addEventListener('click', async (e) => {
     e.preventDefault();
     const exampleId = e.target.dataset.id;
     if (confirm('Сигурни ли сте, че искате да изтриете този пример?')) {
-      await fetch('/api/example/' + exampleId, { method: 'DELETE' });
+      await fetch('/card/example/delete/' + exampleId, { method: 'DELETE' });
       const oldBlock = document.getElementById(exampleId);
       oldBlock.remove();
     }
@@ -206,9 +205,6 @@ async function editExample(form) {
     example: exampleText,
     tipicId: window.location.pathname.split('/').pop()
   };
-
-  console.log('/card/example/edit/' + form.dataset.id);
-
 
   const res = await fetch('/card/example/edit/' + form.dataset.id, {
     method: 'PATCH',

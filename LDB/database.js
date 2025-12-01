@@ -9,6 +9,7 @@ import { createTables } from './createTables.js';
 import { addCard, insertData, addExample } from './insertData.js';
 import { getAllCards, getTopicById, getAllTopicNames, getRelatedTopicNames, getRelatedExamples, getOneExample } from './selectData.js';
 import { updateExample } from './updateData.js'
+import { deleteExampleByIdDB } from './deleteData.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,5 +81,10 @@ export async function upDateExampleById(exampleId, name, description, example) {
 export async function getAExample(exampleId) {
     if (!db) db = await openDB();
     return await getOneExample(db, exampleId);
+}
+
+export async function deleteExampleById(exampleId){
+    if (!db) db = await openDB();
+    return deleteExampleByIdDB(db, exampleId)
 }
 
