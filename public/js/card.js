@@ -90,7 +90,7 @@ function showForm(example) {
   formWrapper.className = 'single-view example-form';
 
   formWrapper.innerHTML = `
-    <form class="card" method="POST">
+    <form class="card" data-edit=${example ? true : false} data-id=${example ? example.example_id : ""} method="POST">
       <header><h3>${example ? 'Редактирай пример' : 'Добави пример'}</h3></header>
 
       <section class="example">
@@ -109,7 +109,7 @@ function showForm(example) {
       </section>
 
       <section class="example">
-        <button type="submit" class="add-btn">${example ? 'Запази' : 'Добави пример'}</button>
+        <button type="${example ? "btn" : "submit"}" class="add-btn">${example ? 'Запази' : 'Добави пример'}</button>
       </section>
     </form>
   `;
@@ -121,9 +121,13 @@ function showForm(example) {
 }
 
 // -------------------- Submit на формата --------------------
-examplesContainer.addEventListener('submit', async (e) => {
+document.addEventListener('submit', async (e) => {
+  e.preventDefault();
   const form = e.target.closest('form');
+  const exampleId = e.target.dataset.id;
   if (!form) return;
+  console.log(form.dataset.edit);
+  if (form.dataset.edit == 'true') { editExample(form); return };
 
   e.preventDefault();
 
@@ -140,7 +144,7 @@ examplesContainer.addEventListener('submit', async (e) => {
     title,
     description,
     example: exampleText,
-    tipicId: id
+    tipicId: window.location.pathname.split('/').pop()
   };
 
   const res = await fetch('/api/example/:id', {
@@ -150,7 +154,6 @@ examplesContainer.addEventListener('submit', async (e) => {
   });
 
   if (res.ok) {
-    alert('Примерът е записан успешно!');
     window.location.reload();
   } else {
     alert('Възникна грешка, опитайте отново.');
@@ -158,7 +161,7 @@ examplesContainer.addEventListener('submit', async (e) => {
 });
 
 // -------------------- Event delegation за бутоните --------------------
-examplesContainer.addEventListener('click', async (e) => {
+document.addEventListener('click', async (e) => {
   // EDIT
   if (e.target.classList.contains('edit-btn')) {
     e.preventDefault();
@@ -184,3 +187,38 @@ examplesContainer.addEventListener('click', async (e) => {
     }
   }
 });
+
+// edit form req
+
+async function editExample(form) {
+  const title = form.querySelector('#title').value.trim();
+  const description = form.querySelector('#description').value.trim();
+  const exampleText = form.querySelector('#example').value.trim();
+
+  if (!title || !description || !exampleText) {
+    alert('Попълнете всички полета!');
+    return;
+  }
+
+  const formData = {
+    title,
+    description,
+    example: exampleText,
+    tipicId: window.location.pathname.split('/').pop()
+  };
+
+  console.log('/card/example/edit/' + form.dataset.id);
+
+
+  const res = await fetch('/card/example/edit/' + form.dataset.id, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  });
+
+  if (res.ok) {
+    window.location.reload();
+  } else {
+    alert('Възникна грешка, опитайте отново.');
+  }
+}

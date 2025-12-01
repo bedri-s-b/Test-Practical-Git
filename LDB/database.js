@@ -72,9 +72,9 @@ export async function addNewExample(title, description, example, topicId) {
     await addExample(db, title, description, example, topicId)
 }
 
-export async function upDateExampleById(name, description, example, topic_id) {
+export async function upDateExampleById(exampleId, name, description, example) {
     if (!db) db = await openDB();
-    return await updateExample(db, name, description, example, topic_id);
+    return await updateExample(db, exampleId, name, description, example);
 }
 
 export async function getAExample(exampleId) {

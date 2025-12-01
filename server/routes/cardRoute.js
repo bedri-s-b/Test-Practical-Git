@@ -1,5 +1,5 @@
 import express from 'express';
-import { upDateExampleById} from '../../LDB/database.js';
+import { upDateExampleById } from '../../LDB/database.js';
 
 import path from 'path';
 
@@ -23,15 +23,28 @@ routerCard.get("/example/:id", async (req, res) => {
 
 
 //Редактиране на на Пример
-routerCard.put('/example/edit/:id', async (req, res) => {
-    const id = req.params.id;
-    console.log(id);
+routerCard.patch('/example/edit/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
 
-    await upDateExampleById()
-    // res.json({
-    //     message: "Updated successfully",
-    //     changes: this.changes
-    // });
-})
+        const { title, description, example } = req.body;
+
+        const result = await upDateExampleById(
+            id,
+            title,
+            description,
+            example
+        );
+
+        res.json({
+            message: "Updated successfully",
+            changes: result
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "DB error" });
+    }
+});
 
 export default routerCard;

@@ -1,11 +1,11 @@
 
-export async function updateExample(db, name, description, example, topic_id) {
-    db.run(`UPDATE examples 
+export async function updateExample(db, example_id, name, description, example) {
+   return await db.run(`UPDATE examples 
             SET 
                 name = COALESCE(?, name),
                 description = COALESCE(?, description),
-                example = COALESCE(?, example),
-            WHERE id = ?
+                example = COALESCE(?, example)
+            WHERE example_id = ?
                 `,
-        [name, description, example, topic_id])
+        [name, description, example, example_id])
 }
