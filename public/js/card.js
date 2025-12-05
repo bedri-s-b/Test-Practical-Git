@@ -50,14 +50,13 @@ function displayExamples(examples) {
         <article class="card" aria-labelledby="card1-title">
           <header>
             <h3 id="card1-title">${e.name}</h3>
-            <p class="muted">Кратко обяснение за бърз достъп</p>
           </header>
 
           <p class="card-desc">${e.description}</p>
 
           <section class="examples">
             <h4>Пример</h4>
-            <pre><code>${e.example}</code></pre>
+            <article>${e.example}</article>
 
             <nav class="top-nav">
               <ul>

@@ -1,3 +1,20 @@
+* {
+  box-sizing: border-box
+}
+
+/*Typography*/
+body {
+  font-size: 32px;
+  line-height: 1.5;
+}
+
+
+#examples-container{
+  max-width: 66ch;
+  font-size: 24px;
+}
+
+
 /* === Inline Top Navigation === */
 .top-nav {
   width: 100%;
@@ -62,9 +79,7 @@
   color-scheme: dark;
 }
 
-* {
-  box-sizing: border-box
-}
+
 
 html,
 body {
